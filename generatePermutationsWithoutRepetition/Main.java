@@ -4,37 +4,35 @@ import java.util.Scanner;
 
 public class Main {
     public static String[] elements;
-    public static String[] permutes;
-    public static boolean[] used;
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
         elements = scanner.nextLine().split("\\s+");
-        permutes = new String[elements.length];
-        used = new boolean[elements.length];
 
         permuteWithoutRepetition(0);
     }
 
     private static void permuteWithoutRepetition(int index) {
         if (index == elements.length) {
-            print();
+            print(elements);
         } else {
-            for (int i = 0; i < elements.length; i++) {
-                if (!used[i]) {
-                    used[i] = true;
-
-                    permutes[index] = elements[i];
-                    permuteWithoutRepetition(index + 1);
-
-                    used[i] = false;
-                }
+            permuteWithoutRepetition(index + 1);
+            for (int i = index + 1; i < elements.length; i++) {
+                swap(elements, index, i);
+                permuteWithoutRepetition(index + 1);
+                swap(elements, index, i);
             }
         }
     }
 
-    private static void print() {
+    private static void swap(String[] elements, int firstIndex, int secondIndex) {
+        String temp = elements[firstIndex];
+        elements[firstIndex] = elements[secondIndex];
+        elements[secondIndex] = temp;
+    }
+
+    private static void print(String[] permutes) {
         System.out.println(String.join(" ", permutes));
     }
 }
